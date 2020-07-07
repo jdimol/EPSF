@@ -1,0 +1,12 @@
+[
+    {
+      "id": 15,
+      "name": "Availability",
+      "data": [90, 95, 99.9]
+    },
+    {
+      "id": 18,
+      "name": "Bandwidth",
+      "data": [10, 20, 25]
+    }
+]

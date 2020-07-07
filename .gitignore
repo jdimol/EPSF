@@ -1,0 +1,6 @@
+.idea/
+*.swp
+*__pychache__/
+*.py[cod]
+*$py.class
+/app/selection_db.sqlite
