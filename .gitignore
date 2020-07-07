@@ -1,4 +1,5 @@
 .idea/
+.DS_Store
 *.swp
 *__pychache__/
 *.py[cod]
