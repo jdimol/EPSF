@@ -9,7 +9,7 @@ import time
 
 # @app.route('/')
 # def index():
-#     return 'Hello, World!'
+#     return 'Edge PoP Selection Framework'
 
 
 # Test api
@@ -47,11 +47,14 @@ class postData(Resource):
             this_object = Attributes.query.get(k["id"])
             kpis[kpis.index(this_object)].value = k["data"]
 
+        length = len(input_kpis[0]["data"])
+        rsrm = [list([1] * length) for j in range(length)]  # Array, initialize rsrm
+
         # ====== Testing Code ======
         for k in kpis:
             if k.value is None:     # Put specific data if there is not at all.
                 k.value = [1, 1, 1]
-            k.rsrv = numeric_rsrv(k.value)
+            k.rsrv = numeric_rsrv(k.value,rsrm)
             # print(k.rsrv)
         # ==========================
 

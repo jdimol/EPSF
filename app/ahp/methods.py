@@ -2,35 +2,36 @@
 import numpy as np
 from app.models import Attributes
 # from app import db
+import time
 
 
 # Find rsrv for each KPI
 
 
-def numeric_rsrv(values):   # kpi):
+def numeric_rsrv(values, rsrm):   # kpi):
 
-    rsrm = []  # Array, initialize rsrm
-    # values = kpi["value"]  # providers data
+    n = len(values)
 
     ''' check if higher value is better '''
     check = True
-
+    start1 = time.time()
     if check:
-        length = len(values)
-        for i in range(length):
-            temp_row = []   # each row of rsrm as a list
-            for j in range(length):
-                # print(i, j)
-                temp_row.append(values[i]/values[j])
-            rsrm.append(temp_row)
-    else:
-        length = len(values)
-        for i in range(length):
-            temp_row = []  # each row of rsrm as a list
-            for j in range(length):
-                # print(i, j)
-                temp_row.append(values[j] / values[i])
-            rsrm.append(temp_row)
+        for i in range(n):
+            # rsrm[i][i] = 1
+            for j in range(i+1, n):
+                rsrm[i][j] = values[i]/values[j]
+                rsrm[j][i] = values[j]/values[i]
+    # else:
+    #     length = len(values)
+    #     for i in range(length):
+    #         temp_row = []  # each row of rsrm as a list
+    #         for j in range(length):
+    #             # print(i, j)
+    #             temp_row.append(values[j] / values[i])
+    #         rsrm.append(temp_row)
+
+    end1 = time.time()
+    print('TIME 1 --->: ', end1-start1)
 
     # sum rows of rsrm
     s_rows = []
@@ -43,7 +44,7 @@ def numeric_rsrv(values):   # kpi):
     rsrv = []   # initialise rsrv
     for elem in s_rows:
         rsrv.append(elem/s_rsrm)
-
+    # print(rsrv)
     return rsrv
 
 
@@ -59,12 +60,9 @@ def un_set_rsrv():
 # At any level of the hierarchical structure
 # Until Attribute's pid = 0!
 
-def attr_rsrv(attrs, kpis):  #, kpis):    # give one attribute as input for testing!
+def attr_rsrv(attrs, kpis):
 
     # calculation of the score for every attribute
-
-    # attrs = Attributes.query.filter_by(kpi=False)
-    # kpis = Attributes.query.filter_by(kpi=True)
 
     attributes = sorted(attrs, key=lambda x: x.id, reverse=True)
 
@@ -74,7 +72,6 @@ def attr_rsrv(attrs, kpis):  #, kpis):    # give one attribute as input for test
 
         # find siblings
         # siblings = Attributes.query.filter_by(pid=attr.id)
-        # print('CHECKING THIS ATTRIBUTE: ' + attr.name)
 
         siblings = []
         for k in kpis:
@@ -90,8 +87,6 @@ def attr_rsrv(attrs, kpis):  #, kpis):    # give one attribute as input for test
         rsrm = []
         w_vector = []
         for s in siblings:
-            # print('CHECKING THIS SIBLING: ' + s.name)
-            # print(s.rsrv)
             w_vector.append(s.weight)
             rsrm.append(s.rsrv)
 
@@ -100,16 +95,13 @@ def attr_rsrv(attrs, kpis):  #, kpis):    # give one attribute as input for test
         rsrm_final = temp_rsrm.transpose()
         w = np.array(w_vector)
 
-        # print(attr.name + '---------------------')
-        # print(w)
+        start1 = time.time()
 
         # find rsrv
         rsrv = rsrm_final.dot(w)    # numpy array multiplication
         attr.rsrv = rsrv.tolist()
-        # print('Score: ', format(attr.rsrv))
-        # update DB
-        # attr.rsrv = rsrv
-        # db.session.commit()
+        end1 = time.time()
+        print('TIME 2 --->: ', end1 - start1)
 
     return attributes
 
