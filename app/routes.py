@@ -1,4 +1,4 @@
-from app import app, api, testing, pop_data_fields
+from app import app, api, epsm_api, pop_data_fields
 from flask_restx import Resource    # Api, fields,
 from flask import jsonify, request
 from app.models import *
@@ -19,7 +19,7 @@ import time
 #         return "Api 'GET' works!"
 
 
-@testing.route('/kpis')
+@epsm_api.route('/kpis')
 class getKpis(Resource):
     @staticmethod
     def get():
@@ -28,7 +28,7 @@ class getKpis(Resource):
         return result, 200
 
 
-@testing.route('/pop_data')
+@epsm_api.route('/pop_data')
 class postData(Resource):
     @api.expect([pop_data_fields])
     def post(self):
@@ -78,7 +78,7 @@ class postData(Resource):
 
 
 @app.route('/db/initialise', methods=['GET', 'POST'])
-def update_db():
+def init_db():
 
     # Validation for JSON content
     db_state = (Attributes.query.all() == [])  # Empty Database Attributes
