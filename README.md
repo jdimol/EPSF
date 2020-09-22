@@ -48,6 +48,12 @@ flask db init
 flask db migrate
 ```
 
+If you get an error "Please edit configuration/connection/logging settings in .../alembic.ini' before proceeding." try:
+
+```bash
+flask db upgrade
+```
+
 ### Run the application:
 
 ```bash
