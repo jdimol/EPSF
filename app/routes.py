@@ -85,7 +85,7 @@ def update_db():
 
     # Validation for JSON content
     db_state = (Attributes.query.all() == [])  # Empty Database Attributes
-
+    print(db_state)
     if db_state and request.is_json:
         # Parse the JSON into a Python dictionary
         attrs = request.get_json()  # List of database attributes

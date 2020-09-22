@@ -1,128 +1,146 @@
 [
-  {"id": 1,
+  {"i_d": 1,
   "name":  "Ranking",
   "kpi": 0,
   "pid": 1 ,
   "weight": 1.0,
+  "high_better": 0,
   "kpi_type": "attribute"
   },
-  {"id": 2,
+  {"i_d": 2,
   "name":  "Hard Constraints",
   "kpi": 0,
   "pid": 1 ,
   "weight": 0.6,
+  "high_better": 0,
   "kpi_type": "attribute"
   },
-  {"id": 3,
+  {"i_d": 3,
   "name":  "Soft Constraints",
   "kpi": 0,
   "pid": 1 ,
   "weight": 0.4,
+  "high_better": 0,
   "kpi_type": "attribute"
   },
-  {"id": 4,
+  {"i_d": 4,
   "name":  "Availability Zone",
   "kpi": 1,
   "pid": 2 ,
   "weight": 0.5,
-  "kpi_type": "set"
+  "kpi_type": "set",
+  "high_better": 1
   },
-  {"id": 5,
+  {"i_d": 5,
   "name":  "CSC Service Catalog",
   "kpi": 1,
   "pid": 2 ,
   "weight": 0.5,
-  "kpi_type": "set"
+  "kpi_type": "set",
+  "high_better": 1
   },
-  {"id": 6,
+  {"i_d": 6,
   "name":  "Slice Performance",
   "kpi": 0,
   "pid": 3 ,
   "weight": 0.333,
-  "kpi_type": "attribute"
+  "kpi_type": "attribute",
+  "high_better": 0
   },
-  {"id": 7,
+  {"i_d": 7,
   "name":  "Cost",
   "kpi": 0,
   "pid": 3 ,
   "weight": 0.333,
-  "kpi_type": "attribute"
+  "kpi_type": "attribute",
+  "high_better": 0
   },
-  {"id": 8,
+  {"i_d": 8,
   "name":  "Support",
   "kpi": 0,
   "pid": 3 ,
   "weight": 0.333,
-  "kpi_type": "attribute"
+  "kpi_type": "attribute",
+  "high_better": 0
   },
-  {"id": 9,
+  {"i_d": 9,
   "name":  "Computing Performance",
   "kpi": 0,
   "pid": 6 ,
   "weight": 0.5,
-  "kpi_type": "attribute"
+  "kpi_type": "attribute",
+  "high_better": 0
   },
-  {"id": 10,
+  {"i_d": 10,
   "name":  "Network Performance",
   "kpi": 0,
   "pid": 6 ,
   "weight": 0.5,
-  "kpi_type": "attribute"
+  "kpi_type": "attribute",
+  "high_better": 0
   },
-  {"id": 11,
+  {"i_d": 11,
   "name":  "VM Cost",
   "kpi": 1,
   "pid": 7 ,
   "weight": 0.5,
-  "kpi_type": "numeric"
+  "kpi_type": "numeric",
+  "high_better": 0
   },
-  {"id": 12,
+  {"i_d": 12,
   "name":  "Data Cost",
   "kpi": 1,
   "pid": 7 ,
   "weight": 0.5,
-  "kpi_type": "numeric"
+  "kpi_type": "numeric",
+  "high_better": 0
   },
-  {"id": 13,
+  {"i_d": 13,
   "name":  "Doc Readability",
   "kpi": 1,
   "pid": 8 ,
   "weight": 0.5,
-  "kpi_type": "ling"
+  "kpi_type": "ling",
+  "high_better": 1
   },
-  {"id": 14,
+  {"i_d": 14,
   "name":  "Technical Support",
   "kpi": 1,
   "pid": 8 ,
   "weight": 0.5,
-  "kpi_type": "ling"
+  "kpi_type": "ling",
+  "high_better": 1
   },
-  {"id": 15,
+  {"i_d": 15,
   "name":  "Availability",
   "kpi": 1,
   "pid": 9 ,
   "weight": 0.333,
-  "kpi_type": "num"
+  "kpi_type": "numeric",
+  "high_better": 1
   },
-  {"id": 16,
+  {"i_d": 16,
   "name":  "Service Response",
   "kpi": 1,
   "pid": 9 ,
   "weight": 0.333,
-  "kpi_type": "num"
+  "kpi_type": "numeric",
+  "high_better": 0
   },
-  {"id": 17,
+  {"i_d": 17,
   "name":  "Elasticity",
   "kpi": 1,
   "pid": 9 ,
   "weight": 0.333,
-  "kpi_type": "num"
+  "kpi_type": "numeric",
+  "high_better": 1
   },
-  {"id": 18,
+  {"i_d": 18,
   "name":  "Bandwidth",
   "kpi": 1,
   "pid": 10 ,
   "weight": 1.0,
-  "kpi_type": "num"
+  "kpi_type": "numeric",
+  "high_better": 1
   }
 ]

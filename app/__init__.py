@@ -2,7 +2,7 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-from flask_restx import Api, fields     # Resource, marshal
+from flask_restx import Api, fields  # Resource, marshal
 import os
 
 # Init app
@@ -36,7 +36,6 @@ pop_data_list_fields = api.model('PoPDataList', {
     'pops_data': fields.List(fields.Nested(pop_data_fields)),
 })
 
-
 from app import routes, models
 
 # app start
@@ -45,8 +44,12 @@ print('\n***** PoP Selection API *****')
 
 # Validations
 print('\n**********')
-temp = (models.Attributes.query.all() == [])  # Empty Database
-if temp:
-    print('Empty Attributes Table.\n**********\n')
-else:
-    print('DB State OK.\n**********\n')
+try:
+    temp = (models.Attributes.query.all() == [])  # Empty Database
+    if temp:
+        print('Empty Attributes Table.\n**********\n')
+    else:
+        print('DB State OK.\n**********\n')
+
+except:
+    print('Init DB or Empty DB exception')
