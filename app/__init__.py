@@ -2,12 +2,13 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-from flask_restx import Api, fields  # Resource, marshal
+from flask_restx import Api, fields     # Resource, marshal
 import os
 
 # Init app
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
+
 
 # Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'selection_db.sqlite')
@@ -36,6 +37,7 @@ pop_data_list_fields = api.model('PoPDataList', {
     'pops_data': fields.List(fields.Nested(pop_data_fields)),
 })
 
+
 from app import routes, models
 
 # app start
@@ -52,4 +54,4 @@ try:
         print('DB State OK.\n**********\n')
 
 except:
-    print('DB init or migrate')
+    print('Init DB or Empty DB exception')

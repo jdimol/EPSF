@@ -52,7 +52,7 @@ class postData(Resource):
             if k.value is None:     # Put specific data if there is not at all.
                 k.value = [1, 1, 1]
             k.rsrv = numeric_rsrv(k.value)
-            # print(k.rsrv)
+            print(k.rsrv)
         # ==========================
 
         # result = attrs_schema.dump(kpis, many=True)

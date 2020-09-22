@@ -6,3 +6,4 @@
 *$py.class
 app/selection_db.sqlite
 venv/
+migrations/

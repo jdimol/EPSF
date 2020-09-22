@@ -90,8 +90,8 @@ def attr_rsrv(attrs, kpis):  #, kpis):    # give one attribute as input for test
         rsrm = []
         w_vector = []
         for s in siblings:
-            # print('CHECKING THIS SIBLING: ' + s.name)
-            # print(s.rsrv)
+            print('CHECKING THIS SIBLING: ' + s.name)
+            print(s.rsrv)
             w_vector.append(s.weight)
             rsrm.append(s.rsrv)
 
@@ -100,8 +100,8 @@ def attr_rsrv(attrs, kpis):  #, kpis):    # give one attribute as input for test
         rsrm_final = temp_rsrm.transpose()
         w = np.array(w_vector)
 
-        # print(attr.name + '---------------------')
-        # print(w)
+        print(attr.name + '---------------------')
+        print(w)
 
         # find rsrv
         rsrv = rsrm_final.dot(w)    # numpy array multiplication
