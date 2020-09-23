@@ -15,14 +15,16 @@ class Attributes(db.Model):
     pid = db.Column(db.Integer)
     weight = db.Column(db.Float)
     kpi_type = db.Column(db.String(80))
+    high_better = db.Column(db.Boolean)
     value = None
 
-    def __init__(self, i_d, name, kpi, pid, kpi_type, weight):
+    def __init__(self, i_d, name, kpi, pid, kpi_type, hb, weight):
         self.id = i_d
         self.name = name
         self.kpi = kpi
         self.pid = pid
         self.kpi_type = kpi_type
+        self.high_better = hb
         self.weight = weight
 
     @classmethod
@@ -36,7 +38,7 @@ class Attributes(db.Model):
 
 class AttrSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'name', 'kpi', 'pid', 'kpi_type', 'weight', 'value', 'rsrv')
+        fields = ('id', 'name', 'kpi', 'pid', 'kpi_type', 'weight', 'value', 'high_better', 'rsrv')
 
 
 # Init schema

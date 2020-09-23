@@ -4,6 +4,7 @@
   "kpi": 0,
   "pid": 0 ,
   "weight": 1.0,
+  "hb": 0,
   "kpi_type": "attribute"
   },
   {"i_d": 2,
@@ -11,6 +12,7 @@
   "kpi": 0,
   "pid": 1 ,
   "weight": 0.6,
+  "hb": 0,
   "kpi_type": "attribute"
   },
   {"i_d": 3,
@@ -18,6 +20,7 @@
   "kpi": 0,
   "pid": 1 ,
   "weight": 0.4,
+  "hb": 0,
   "kpi_type": "attribute"
   },
   {"i_d": 4,
@@ -25,6 +28,7 @@
   "kpi": 1,
   "pid": 2 ,
   "weight": 0.5,
+  "hb": 1,
   "kpi_type": "set"
   },
   {"i_d": 5,
@@ -32,6 +36,7 @@
   "kpi": 1,
   "pid": 2 ,
   "weight": 0.5,
+  "hb": 1,
   "kpi_type": "set"
   },
   {"i_d": 6,
@@ -39,6 +44,7 @@
   "kpi": 0,
   "pid": 3 ,
   "weight": 0.333,
+  "hb": 0,
   "kpi_type": "attribute"
   },
   {"i_d": 7,
@@ -46,6 +52,7 @@
   "kpi": 0,
   "pid": 3 ,
   "weight": 0.333,
+  "hb": 0,
   "kpi_type": "attribute"
   },
   {"i_d": 8,
@@ -53,6 +60,7 @@
   "kpi": 0,
   "pid": 3 ,
   "weight": 0.333,
+  "hb": 0,
   "kpi_type": "attribute"
   },
   {"i_d": 9,
@@ -60,6 +68,7 @@
   "kpi": 0,
   "pid": 6 ,
   "weight": 0.5,
+  "hb": 0,
   "kpi_type": "attribute"
   },
   {"i_d": 10,
@@ -67,6 +76,7 @@
   "kpi": 0,
   "pid": 6 ,
   "weight": 0.5,
+  "hb": 0,
   "kpi_type": "attribute"
   },
   {"i_d": 11,
@@ -74,6 +84,7 @@
   "kpi": 1,
   "pid": 7 ,
   "weight": 0.5,
+  "hb": 0,
   "kpi_type": "numeric"
   },
   {"i_d": 12,
@@ -81,6 +92,7 @@
   "kpi": 1,
   "pid": 7 ,
   "weight": 0.5,
+  "hb": 0,
   "kpi_type": "numeric"
   },
   {"i_d": 13,
@@ -88,6 +100,7 @@
   "kpi": 1,
   "pid": 8 ,
   "weight": 0.5,
+  "hb": 1,
   "kpi_type": "ling"
   },
   {"i_d": 14,
@@ -95,6 +108,7 @@
   "kpi": 1,
   "pid": 8 ,
   "weight": 0.5,
+  "hb": 1,
   "kpi_type": "ling"
   },
   {"i_d": 15,
@@ -102,6 +116,7 @@
   "kpi": 1,
   "pid": 9 ,
   "weight": 0.333,
+  "hb": 1,
   "kpi_type": "num"
   },
   {"i_d": 16,
@@ -109,6 +124,7 @@
   "kpi": 1,
   "pid": 9 ,
   "weight": 0.333,
+  "hb": 0,
   "kpi_type": "num"
   },
   {"i_d": 17,
@@ -116,6 +132,7 @@
   "kpi": 1,
   "pid": 9 ,
   "weight": 0.333,
+  "hb": 1,
   "kpi_type": "num"
   },
   {"i_d": 18,
@@ -123,6 +140,7 @@
   "kpi": 1,
   "pid": 10 ,
   "weight": 1.0,
+  "hb": 1,
   "kpi_type": "num"
   }
 ]
