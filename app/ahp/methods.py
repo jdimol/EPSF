@@ -7,13 +7,10 @@ from app.models import Attributes
 # Find rsrv for each KPI
 
 
-def numeric_rsrv(values):   # kpi):
+def numeric_rsrv(values, check):   # kpi):
 
     rsrm = []  # Array, initialize rsrm
     # values = kpi["value"]  # providers data
-
-    ''' check if higher value is better '''
-    check = True
 
     if check:
         length = len(values)

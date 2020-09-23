@@ -51,7 +51,7 @@ class postData(Resource):
         for k in kpis:
             if k.value is None:     # Put specific data if there is not at all.
                 k.value = [1, 1, 1]
-            k.rsrv = numeric_rsrv(k.value)
+            k.rsrv = numeric_rsrv(k.value, k.high_better)
             print(k.rsrv)
         # ==========================
 
