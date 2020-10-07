@@ -37,6 +37,13 @@ pop_data_list_fields = api.model('PoPDataList', {
     'pops_data': fields.List(fields.Nested(pop_data_fields)),
 })
 
+weight_assignment = api.model('weight_assignment', {
+    'Cost': fields.Float(min=0.1, max=0.8),
+    'Computing Performance': fields.Float(min=0.1, max=0.9),
+    'Network Performance': fields.Float(min=0.1, max=0.9),
+    'pref_location': fields.String
+})
+
 
 from app import routes, models
 

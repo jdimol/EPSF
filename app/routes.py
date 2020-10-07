@@ -1,4 +1,4 @@
-from app import app, api, epsm_api, pop_data_fields
+from app import app, api, epsm_api, pop_data_fields, weight_assignment
 from flask_restx import Resource    # Api, fields,
 from flask import jsonify, request
 from app.models import *
@@ -26,6 +26,33 @@ class getKpis(Resource):
         temp = Attributes.query.filter_by(kpi=True)
         result = attrs_schema.dump(temp, many=True)
         return result, 200
+
+
+@epsm_api.route('/consumer_requirements')
+class weightAssignment(Resource):
+    @api.expect(weight_assignment)
+    def post(self):
+
+        dict_data = dict(request.get_json())
+
+        # Extract pref_location from dictionary
+        loc_required = dict_data["pref_location"]
+        del dict_data["pref_location"]
+
+        # Find the specified attributes
+        # Iteration for update weight field in the db
+        for key, value in dict_data.items():
+            temp = Attributes.query.filter_by(name=key).first()
+            temp.weight = float(value)
+            # Normalize weight assignment
+            if temp.name == 'Cost':
+                temp2 = Attributes.query.filter_by(name='Slice Performance').first()
+                temp2.weight = 0.9 - float(value)
+            db.session.commit()
+            print("Attribute " + key + "weight assignment OK!")
+
+        return "Consumer's requirements assigned", 200
+        # Weight data parsed
 
 
 @epsm_api.route('/pop_data')
@@ -79,7 +106,6 @@ class postData(Resource):
 
 @app.route('/db/initialise', methods=['GET', 'POST'])
 def init_db():
-
     # Validation for JSON content
     db_state = (Attributes.query.all() == [])  # Empty Database Attributes
 
@@ -91,7 +117,6 @@ def init_db():
             db.session.add(a)
             db.session.commit()
         return ' DB Initialisation Done.', 200
-
     else:
         return jsonify(attrs_schema.dump(Attributes.query.all(), many=True)), 'Attributes Table is ' \
                                                                       'not Empty. Do you want to update DB?'
