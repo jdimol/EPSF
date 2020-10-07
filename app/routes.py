@@ -122,5 +122,3 @@ def init_db():
                                                                       'not Empty. Do you want to update DB?'
 
 
-if __name__ == "__main__":
-    app.run()
