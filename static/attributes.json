@@ -8,7 +8,7 @@
   "kpi_type": "attribute"
   },
   {"i_d": 2,
-  "name":  "Hard Constraints",
+  "name":  "Hard_Constraints",
   "kpi": 0,
   "pid": 1 ,
   "weight": 0.6,
@@ -16,7 +16,7 @@
   "kpi_type": "attribute"
   },
   {"i_d": 3,
-  "name":  "Soft Constraints",
+  "name":  "Soft_Constraints",
   "kpi": 0,
   "pid": 1 ,
   "weight": 0.4,
@@ -24,7 +24,7 @@
   "kpi_type": "attribute"
   },
   {"i_d": 4,
-  "name":  "Availability Zone",
+  "name":  "Availability_Zone",
   "kpi": 1,
   "pid": 2 ,
   "weight": 0.5,
@@ -32,7 +32,7 @@
   "kpi_type": "set"
   },
   {"i_d": 5,
-  "name":  "CSC Service Catalog",
+  "name":  "CSC_Service_Catalog",
   "kpi": 1,
   "pid": 2 ,
   "weight": 0.5,
@@ -40,7 +40,7 @@
   "kpi_type": "set"
   },
   {"i_d": 6,
-  "name":  "Slice Performance",
+  "name":  "Slice_Performance",
   "kpi": 0,
   "pid": 3 ,
   "weight": 0.333,
@@ -64,7 +64,7 @@
   "kpi_type": "attribute"
   },
   {"i_d": 9,
-  "name":  "Computing Performance",
+  "name":  "Computing_Performance",
   "kpi": 0,
   "pid": 6 ,
   "weight": 0.5,
@@ -72,7 +72,7 @@
   "kpi_type": "attribute"
   },
   {"i_d": 10,
-  "name":  "Network Performance",
+  "name":  "Network_Performance",
   "kpi": 0,
   "pid": 6 ,
   "weight": 0.5,
@@ -80,7 +80,7 @@
   "kpi_type": "attribute"
   },
   {"i_d": 11,
-  "name":  "VM Cost",
+  "name":  "VM_Cost",
   "kpi": 1,
   "pid": 7 ,
   "weight": 0.5,
@@ -88,7 +88,7 @@
   "kpi_type": "numeric"
   },
   {"i_d": 12,
-  "name":  "Data Cost",
+  "name":  "Data_Cost",
   "kpi": 1,
   "pid": 7 ,
   "weight": 0.5,
@@ -96,7 +96,7 @@
   "kpi_type": "numeric"
   },
   {"i_d": 13,
-  "name":  "Doc Readability",
+  "name":  "Document_Readability",
   "kpi": 1,
   "pid": 8 ,
   "weight": 0.5,
@@ -104,7 +104,7 @@
   "kpi_type": "ling"
   },
   {"i_d": 14,
-  "name":  "Technical Support",
+  "name":  "Technical_Support",
   "kpi": 1,
   "pid": 8 ,
   "weight": 0.5,
@@ -117,15 +117,15 @@
   "pid": 9 ,
   "weight": 0.333,
   "hb": 1,
-  "kpi_type": "num"
+  "kpi_type": "numeric"
   },
   {"i_d": 16,
-  "name":  "Service Response",
+  "name":  "Service_Response",
   "kpi": 1,
   "pid": 9 ,
   "weight": 0.333,
   "hb": 0,
-  "kpi_type": "num"
+  "kpi_type": "numeric"
   },
   {"i_d": 17,
   "name":  "Elasticity",
@@ -133,7 +133,7 @@
   "pid": 9 ,
   "weight": 0.333,
   "hb": 1,
-  "kpi_type": "num"
+  "kpi_type": "numeric"
   },
   {"i_d": 18,
   "name":  "Bandwidth",
@@ -141,6 +141,6 @@
   "pid": 10 ,
   "weight": 1.0,
   "hb": 1,
-  "kpi_type": "num"
+  "kpi_type": "numeric"
   }
 ]

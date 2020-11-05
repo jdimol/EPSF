@@ -3,20 +3,8 @@ from flask_restx import Resource    # Api, fields,
 from flask import jsonify, request
 from app.models import *
 from app.ahp.methods import numeric_rsrv, attr_rsrv
-import time
+import time, requests
 # import json
-
-
-# @app.route('/')
-# def index():
-#     return 'Hello, World!'
-
-
-# Test api
-# @api.route('/test')
-# class dataclass(Resource):
-#     def get(self):
-#         return "Api 'GET' works!"
 
 
 @epsm_api.route('/kpis')
@@ -46,7 +34,7 @@ class weightAssignment(Resource):
             temp.weight = float(value)
             # Normalize weight assignment
             if temp.name == 'Cost':
-                temp2 = Attributes.query.filter_by(name='Slice Performance').first()
+                temp2 = Attributes.query.filter_by(name='Slice_Performance').first()
                 temp2.weight = 0.9 - float(value)
             db.session.commit()
             print("Attribute " + key + "weight assignment OK!")
@@ -57,14 +45,30 @@ class weightAssignment(Resource):
 
 @epsm_api.route('/pop_data')
 class postData(Resource):
-    @api.expect([pop_data_fields])
-    def post(self):
+    @staticmethod
+    def post():
+
+        appd_list = request.get_json()
+        # Create a list with values for each KPI
+
+        rank_data = []
+        # Define rank objects temp
+        kpi_dict = appd_list[0]['appD']['PoPKPIs']
+        for key, val in kpi_dict.items():
+            temp = Attributes.query.filter_by(name=key).first()
+            rank_obj_temp = {"id": int(temp.id), "name": key, "data": [int(val)]}
+            rank_data.append(rank_obj_temp)
+
+        appd_list.pop(0)
+
+        for kpi_obj in rank_data:
+            for prov in appd_list:
+                kpi_obj['data'].append(prov['appD']['PoPKPIs'][kpi_obj['name']])
 
         # measure execution time
-        start_time = time.time()    # end_time next
+        start_time = time.time()  # end_time next
 
-        data = request.get_json()
-        input_kpis = sorted(data, key=lambda x: x["id"], reverse=True)
+        input_kpis = sorted(rank_data, key=lambda x: x["id"], reverse=True)
 
         kpis = Attributes.query.filter_by(kpi=True)
         kpis = sorted(kpis, key=lambda x: x.id, reverse=True)
@@ -76,8 +80,9 @@ class postData(Resource):
 
         # ====== Testing Code ======
         for k in kpis:
-            if k.value is None:     # Put specific data if there is not at all.
+            if k.value is None:  # Put specific data if there is not at all.
                 k.value = [1, 1, 1]
+                print('None value for the KPI!!')
             k.rsrv = numeric_rsrv(k.value, k.high_better)
             print(k.rsrv)
         # ==========================
@@ -90,18 +95,46 @@ class postData(Resource):
         # result = attrs_schema.dump(scores, many=True)
         # print(scores[0].rsrv, end_time-start_time)
 
-        execution_time = end_time-start_time
+        execution_time = end_time - start_time
         ranking_vector = scores[0].rsrv
 
         result = json.dumps({'Ranking': ranking_vector, 'Exec Time': execution_time})
 
         return result, 200
 
-    # @api.expect(attr_data)
-    # def post(self):
-    #     temp = api.payload
-    #     result = attrs_schema.dump(temp, many=True)
-    #     return result, 200
+
+@epsm_api.route('/pop_ranking')
+class popRanking(Resource):
+    @api.expect([pop_data_fields])
+    def post(self):
+
+        data = request.get_json()
+        print(data)
+        input_kpis = sorted(data, key=lambda x: x["id"], reverse=True)
+
+        kpis = Attributes.query.filter_by(kpi=True)
+        kpis = sorted(kpis, key=lambda x: x.id, reverse=True)
+
+        # Update value field
+        for k in input_kpis:
+            this_object = Attributes.query.get(k["id"])
+            kpis[kpis.index(this_object)].value = k["data"]
+
+        for k in kpis:
+            if k.value is None:     # Put specific data if there is not at all.
+                k.value = [1, 1, 1]
+                print('None value for the KPI!!')
+            k.rsrv = numeric_rsrv(k.value, k.high_better)
+            print(k.rsrv)
+
+        attributes = Attributes.query.filter_by(kpi=False)
+        scores = attr_rsrv(attributes, kpis)
+
+        ranking_vector = scores[0].rsrv
+
+        result = json.dumps({'Ranking': ranking_vector})
+
+        return result, 200
 
 
 @app.route('/db/initialise', methods=['GET', 'POST'])
@@ -122,3 +155,13 @@ def init_db():
                                                                       'not Empty. Do you want to update DB?'
 
 
+# @app.route('/')
+# def index():
+#     return 'Hello, World!'
+
+
+# Test api
+# @api.route('/test')
+# class dataclass(Resource):
+#     def get(self):
+#         return "Api 'GET' works!"

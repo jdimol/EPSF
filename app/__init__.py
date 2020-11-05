@@ -27,7 +27,7 @@ api = Api(app, version='1.0', title="EPoP Selection Mechanism", description="EPS
 epsm_api = api.namespace('epsm_api', description="Edge PoP Selection Framework")
 
 # Create PoP data model for swagger
-pop_data_fields = api.model('PoPData', {
+pop_data_fields = api.model('RankData', {
     'id': fields.Integer,
     'name': fields.String,
     'data': fields.List(fields.Integer)

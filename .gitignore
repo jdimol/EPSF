@@ -5,5 +5,7 @@
 *.py[cod]
 *$py.class
 app/selection_db.sqlite
+app/temp/
+app/appd_translator.py
 venv/
 migrations/
