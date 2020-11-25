@@ -1,10 +1,29 @@
-from app import app, api, epsm_api, pop_data_fields, weight_assignment
-from flask_restx import Resource    # Api, fields,
+''' Edge Cloud Selection - FAHP Based Application '''
+
+# EndPoints Implementation File
+# EPSM API (/epsm_api) interacts with the MESON components.
+
+'''
+Features:
+ 1) Hierarchical Structure Definition - DataBase Initialisation.
+ 2) Weight Assignments for Specific Attributes
+ 3) Ranking Mechanism:
+     - Can handle data for KPIs in an ETSI_MEC descriptor format.
+     - or format specified in the swagger.json file in "pop_data_fields"
+       data structure.
+'''
+
+import time
+import requests
+
 from flask import jsonify, request
+from flask_restx import Resource
+
+from app import app, api, epsm_api
+from app import pop_data_fields, weight_assignment
 from app.models import *
 from app.ahp.methods import numeric_rsrv, attr_rsrv
-import time, requests
-# import json
+
 
 
 @epsm_api.route('/kpis')
@@ -55,50 +74,30 @@ class postData(Resource):
         # Define rank objects temp
         kpi_dict = appd_list[0]['appD']['PoPKPIs']
         for key, val in kpi_dict.items():
+            print(key)
             temp = Attributes.query.filter_by(name=key).first()
             rank_obj_temp = {"id": int(temp.id), "name": key, "data": [int(val)]}
             rank_data.append(rank_obj_temp)
-
+        appd_list_temp = appd_list # store appds
         appd_list.pop(0)
 
         for kpi_obj in rank_data:
             for prov in appd_list:
                 kpi_obj['data'].append(prov['appD']['PoPKPIs'][kpi_obj['name']])
 
-        # measure execution time
-        start_time = time.time()  # end_time next
+        r_data = json.dumps(rank_data)
+        url = 'http://127.0.0.1:8080/epsm_api/pop_ranking'
+        headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+        req = requests.post(url, data=r_data, headers=headers)
 
-        input_kpis = sorted(rank_data, key=lambda x: x["id"], reverse=True)
+        if req.json==[]:
+            return 'Problem in the ranking process!', 500
 
-        kpis = Attributes.query.filter_by(kpi=True)
-        kpis = sorted(kpis, key=lambda x: x.id, reverse=True)
-
-        # Update value field
-        for k in input_kpis:
-            this_object = Attributes.query.get(k["id"])
-            kpis[kpis.index(this_object)].value = k["data"]
-
-        # ====== Testing Code ======
-        for k in kpis:
-            if k.value is None:  # Put specific data if there is not at all.
-                k.value = [1, 1, 1]
-                print('None value for the KPI!!')
-            k.rsrv = numeric_rsrv(k.value, k.high_better)
-            print(k.rsrv)
-        # ==========================
-
-        # result = attrs_schema.dump(kpis, many=True)
-
-        attributes = Attributes.query.filter_by(kpi=False)
-        scores = attr_rsrv(attributes, kpis)
-        end_time = time.time()
-        # result = attrs_schema.dump(scores, many=True)
-        # print(scores[0].rsrv, end_time-start_time)
-
-        execution_time = end_time - start_time
-        ranking_vector = scores[0].rsrv
-
-        result = json.dumps({'Ranking': ranking_vector, 'Exec Time': execution_time})
+        ranking = json.loads(req.json())
+        ranking_vector = ranking['Ranking']
+        prov_index = ranking_vector.index(max(ranking_vector))
+        result = json.dumps({'Ranking': ranking_vector, 'prov_idex': prov_index})
+        result = appd_list_temp[prov_index]
 
         return result, 200
 
@@ -109,7 +108,6 @@ class popRanking(Resource):
     def post(self):
 
         data = request.get_json()
-        print(data)
         input_kpis = sorted(data, key=lambda x: x["id"], reverse=True)
 
         kpis = Attributes.query.filter_by(kpi=True)
@@ -121,26 +119,41 @@ class popRanking(Resource):
             kpis[kpis.index(this_object)].value = k["data"]
 
         for k in kpis:
-            if k.value is None:     # Put specific data if there is not at all.
-                k.value = [1, 1, 1]
-                print('None value for the KPI!!')
+            # Check empty values
+            if k.value is None:
+                error_msg('None value for the KPI: ' +  k.name)
+                print('ERROR!')
+                print(error_msg)
+                return error_msg, 500
+            # Ranking Calcuations for KPIs
             k.rsrv = numeric_rsrv(k.value, k.high_better)
-            print(k.rsrv)
 
+        # Ranking Calculations for Attributes
         attributes = Attributes.query.filter_by(kpi=False)
         scores = attr_rsrv(attributes, kpis)
 
-        ranking_vector = scores[0].rsrv
+        for attr in scores:
+            if attr.name=='Ranking':
+                ranking_vector = attr.rsrv
 
-        result = json.dumps({'Ranking': ranking_vector})
-
-        return result, 200
+        #max_score=max(ranking_vector)
+        #prov_index = ranking_vector.index(max_score)
+        #result = json.dumps({'Ranking': ranking_vector, 'Best_Prov_index': prov_index})
+        result = ranking_vector
+        print(result)
+        return json.dumps({'Ranking':result})
 
 
 @app.route('/db/initialise', methods=['GET', 'POST'])
 def init_db():
-    # Validation for JSON content
-    db_state = (Attributes.query.all() == [])  # Empty Database Attributes
+    '''
+        Hierarchical Structure Initialisation
+        input: a JSON file which contains the KPIs
+        and attributes of the hierarchical srtucture.
+
+    '''
+    # Validation for JSON content and Empty Database (Attributes)
+    db_state = (Attributes.query.all() == [])
 
     if db_state and request.is_json:
         # Parse the JSON into a Python dictionary
@@ -151,9 +164,11 @@ def init_db():
             db.session.commit()
         return ' DB Initialisation Done.', 200
     else:
-        return jsonify(attrs_schema.dump(Attributes.query.all(), many=True)), 'Attributes Table is ' \
-                                                                      'not Empty. Do you want to update DB?'
-
+        # return already stored attributes
+        attrs = Attributes.query.all()
+        attrs = jsonify(attrs_schema.dump(attrs, many=True))
+        msg = 'Attributes table is not empty.'
+        return attrs, msg
 
 # @app.route('/')
 # def index():

@@ -10,8 +10,8 @@ from app.models import Attributes
 def numeric_rsrv(values, check):   # kpi):
 
     rsrm = []  # Array, initialize rsrm
-    # values = kpi["value"]  # providers data
-
+    # values = kpi["value"]  # providers data1)
+    print(check)
     if check:
         length = len(values)
         for i in range(length):
@@ -87,8 +87,8 @@ def attr_rsrv(attrs, kpis):  #, kpis):    # give one attribute as input for test
         rsrm = []
         w_vector = []
         for s in siblings:
-            print('CHECKING THIS SIBLING: ' + s.name)
-            print(s.rsrv)
+            #print('CHECKING THIS SIBLING: ' + s.name)
+            #print(s.rsrv)
             w_vector.append(s.weight)
             rsrm.append(s.rsrv)
 
@@ -97,13 +97,13 @@ def attr_rsrv(attrs, kpis):  #, kpis):    # give one attribute as input for test
         rsrm_final = temp_rsrm.transpose()
         w = np.array(w_vector)
 
-        print(attr.name + '---------------------')
-        print(w)
+        #print(attr.name + '---------------------')
+        #print(w)
 
         # find rsrv
         rsrv = rsrm_final.dot(w)    # numpy array multiplication
         attr.rsrv = rsrv.tolist()
-        # print('Score: ', format(attr.rsrv))
+        #print('Score: ', format(attr.rsrv))
         # update DB
         # attr.rsrv = rsrv
         # db.session.commit()
@@ -125,14 +125,14 @@ def test():
             test_attrs.append(a)
 
     for k in test_kpis:
-        print(k.name)
+        #print(k.name)
         k.value = [1, 2, 3]
-        print(k.value)
+        #print(k.value)
         k.rsrv = numeric_rsrv(k.value)
         # print(k.name + '__VALUE:__' + str(k.value) + '__RSRV:__ ' + str(k.rsrv))
 
-    for k in test_kpis:
-        print(k.value)
+    #for k in test_kpis:
+        #print(k.value)
     # testing numeric rsrv
     # test_rsrv = numeric_rsrv(attr.value)
     # print(test_rsrv)
@@ -140,6 +140,6 @@ def test():
     # attr.rsrv = numeric_rsrv([4, 8, 4])
     attrs = attr_rsrv(test_attrs, test_kpis)
 
-    for attr in test_attrs:
-        print(attr.name, attr.weight)
+    #for attr in test_attrs:
+        #print(attr.name, attr.weight)
     return 'ok'
