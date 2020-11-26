@@ -13,7 +13,7 @@ Features:
        data structure.
 '''
 
-import time
+# import time
 import requests
 
 from flask import jsonify, request
@@ -23,7 +23,6 @@ from app import app, api, epsm_api
 from app import pop_data_fields, weight_assignment
 from app.models import *
 from app.ahp.methods import numeric_rsrv, attr_rsrv
-
 
 
 @epsm_api.route('/kpis')
@@ -43,8 +42,9 @@ class weightAssignment(Resource):
         dict_data = dict(request.get_json())
 
         # Extract pref_location from dictionary
-        loc_required = dict_data["pref_location"]
-        del dict_data["pref_location"]
+        loc_required = dict_data["Pref_Location"]
+        print(loc_required)
+        del dict_data["Pref_Location"]
 
         # Find the specified attributes
         # Iteration for update weight field in the db
@@ -69,7 +69,8 @@ class postData(Resource):
 
         appd_list = request.get_json()
         # Create a list with values for each KPI
-
+        if not appd_list:
+            return "Not Descriptor List provided or not in JSON format.", 415
         rank_data = []
         # Define rank objects temp
         kpi_dict = appd_list[0]['appD']['PoPKPIs']
@@ -96,7 +97,6 @@ class postData(Resource):
         ranking = json.loads(req.json())
         ranking_vector = ranking['Ranking']
         prov_index = ranking_vector.index(max(ranking_vector))
-        result = json.dumps({'Ranking': ranking_vector, 'prov_idex': prov_index})
         result = appd_list_temp[prov_index]
 
         return result, 200
@@ -121,7 +121,7 @@ class popRanking(Resource):
         for k in kpis:
             # Check empty values
             if k.value is None:
-                error_msg('None value for the KPI: ' +  k.name)
+                error_msg = 'None value for the KPI: ' + k.name
                 print('ERROR!')
                 print(error_msg)
                 return error_msg, 500
@@ -133,15 +133,13 @@ class popRanking(Resource):
         scores = attr_rsrv(attributes, kpis)
 
         for attr in scores:
-            if attr.name=='Ranking':
+            if attr.name == 'Ranking':
                 ranking_vector = attr.rsrv
+                result = ranking_vector
+                print(result)
+                return json.dumps({'Ranking': result})
 
-        #max_score=max(ranking_vector)
-        #prov_index = ranking_vector.index(max_score)
-        #result = json.dumps({'Ranking': ranking_vector, 'Best_Prov_index': prov_index})
-        result = ranking_vector
-        print(result)
-        return json.dumps({'Ranking':result})
+        return "Problem in ranking process", 500
 
 
 @app.route('/db/initialise', methods=['GET', 'POST'])
