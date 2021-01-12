@@ -1,4 +1,4 @@
-''' Edge Cloud Selection - FAHP Based Application '''
+""" Edge Cloud Selection - FAHP Based Application """
 
 # EndPoints Implementation File
 # EPSM API (/epsm_api) interacts with the MESON components.
@@ -79,7 +79,7 @@ class postData(Resource):
             temp = Attributes.query.filter_by(name=key).first()
             rank_obj_temp = {"id": int(temp.id), "name": key, "data": [int(val)]}
             rank_data.append(rank_obj_temp)
-        appd_list_temp = appd_list # store appds
+        appd_list_temp = appd_list  # store appds
         appd_list.pop(0)
 
         for kpi_obj in rank_data:
@@ -91,7 +91,7 @@ class postData(Resource):
         headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
         req = requests.post(url, data=r_data, headers=headers)
 
-        if req.json==[]:
+        if not req.json:
             return 'Problem in the ranking process!', 500
 
         ranking = json.loads(req.json())
@@ -144,12 +144,12 @@ class popRanking(Resource):
 
 @app.route('/db/initialise', methods=['GET', 'POST'])
 def init_db():
-    '''
+    """
         Hierarchical Structure Initialisation
         input: a JSON file which contains the KPIs
         and attributes of the hierarchical srtucture.
 
-    '''
+    """
     # Validation for JSON content and Empty Database (Attributes)
     db_state = (Attributes.query.all() == [])
 

@@ -1,23 +1,20 @@
 # AHP methods for EPoP Selection Mechanism
+
 import numpy as np
+
 from app.models import Attributes
-# from app import db
 
 
 # Find rsrv for each KPI
-
-
-def numeric_rsrv(values, check):   # kpi):
+def numeric_rsrv(values, check):
 
     rsrm = []  # Array, initialize rsrm
-    # values = kpi["value"]  # providers data1)
-    print(check)
+    # print(check)
     if check:
         length = len(values)
         for i in range(length):
             temp_row = []   # each row of rsrm as a list
             for j in range(length):
-                # print(i, j)
                 temp_row.append(values[i]/values[j])
             rsrm.append(temp_row)
     else:
@@ -25,7 +22,6 @@ def numeric_rsrv(values, check):   # kpi):
         for i in range(length):
             temp_row = []  # each row of rsrm as a list
             for j in range(length):
-                # print(i, j)
                 temp_row.append(values[j] / values[i])
             rsrm.append(temp_row)
 
@@ -55,24 +51,15 @@ def un_set_rsrv():
 # Ranking calculation
 # At any level of the hierarchical structure
 # Until Attribute's pid = 0!
-
-def attr_rsrv(attrs, kpis):  #, kpis):    # give one attribute as input for testing!
+def attr_rsrv(attrs, kpis):
 
     # calculation of the score for every attribute
-
-    # attrs = Attributes.query.filter_by(kpi=False)
-    # kpis = Attributes.query.filter_by(kpi=True)
-
     attributes = sorted(attrs, key=lambda x: x.id, reverse=True)
 
     # for every attribute calculate rsrv
-
     for attr in attributes:    # comment iteration for testing
 
         # find siblings
-        # siblings = Attributes.query.filter_by(pid=attr.id)
-        # print('CHECKING THIS ATTRIBUTE: ' + attr.name)
-
         siblings = []
         for k in kpis:
             if attr.id == k.pid:
@@ -87,8 +74,6 @@ def attr_rsrv(attrs, kpis):  #, kpis):    # give one attribute as input for test
         rsrm = []
         w_vector = []
         for s in siblings:
-            #print('CHECKING THIS SIBLING: ' + s.name)
-            #print(s.rsrv)
             w_vector.append(s.weight)
             rsrm.append(s.rsrv)
 
@@ -97,18 +82,18 @@ def attr_rsrv(attrs, kpis):  #, kpis):    # give one attribute as input for test
         rsrm_final = temp_rsrm.transpose()
         w = np.array(w_vector)
 
-        #print(attr.name + '---------------------')
-        #print(w)
-
         # find rsrv
         rsrv = rsrm_final.dot(w)    # numpy array multiplication
         attr.rsrv = rsrv.tolist()
-        #print('Score: ', format(attr.rsrv))
-        # update DB
-        # attr.rsrv = rsrv
-        # db.session.commit()
 
     return attributes
+
+
+# Hanlde zero (0) kpi values
+# Numeric case
+def handle_zero_numeric():
+    """ Avoid zero division error """
+    return 'relative_value'
 
 
 # Testing
