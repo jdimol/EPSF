@@ -1,17 +1,17 @@
-""" Edge Cloud Selection - FAHP Based Application """
+# Edge Cloud Selection - FAHP Based Application
 
 # EndPoints Implementation File
 # EPSM API (/epsm_api) interacts with the MESON components.
 
-'''
-Features:
- 1) Hierarchical Structure Definition - DataBase Initialisation.
- 2) Weight Assignments for Specific Attributes
- 3) Ranking Mechanism:
-     - Can handle data for KPIs in an ETSI_MEC descriptor format.
-     - or format specified in the swagger.json file in "pop_data_fields"
-       data structure.
-'''
+
+# Features:
+#  1) Hierarchical Structure Definition - DataBase Initialisation.
+#  2) Weight Assignments for Specific Attributes
+#  3) Ranking Mechanism:
+#      - Can handle data for KPIs in an ETSI_MEC descriptor format.
+#      - or format specified in the swagger.json file in "pop_data_fields"
+#        data structure.
+
 
 # import time
 import requests
@@ -144,12 +144,11 @@ class popRanking(Resource):
 
 @app.route('/db/initialise', methods=['GET', 'POST'])
 def init_db():
-    """
-        Hierarchical Structure Initialisation
-        input: a JSON file which contains the KPIs
-        and attributes of the hierarchical srtucture.
 
-    """
+    # Hierarchical Structure Initialisation
+    # input: a JSON file which contains the KPIs
+    # and attributes of the hierarchical srtucture.
+
     # Validation for JSON content and Empty Database (Attributes)
     db_state = (Attributes.query.all() == [])
 
