@@ -10,7 +10,7 @@ Based on the user's inputs and the advertised data from EPoPs, the two-stage sel
 Clone the repository locally
 
 ```bash
-git clone https://colab-repo.intracom-telecom.com/colab-projects/meson/meson.git
+git clone https://github.com/jdimol/EPSF.git
 ```
 
 Create a python virtual environment
