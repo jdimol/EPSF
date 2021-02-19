@@ -57,7 +57,7 @@ flask db upgrade
 ### Run the application:
 
 ```bash
-flask run
+flask run -p 8080
 ```
 Application is now running on localhost.
 
@@ -68,17 +68,22 @@ A hierarchical structure with the corresponding attributes is located in the sta
 Store this structure as objects in the db via an api call:
 
 ```bash
-curl -X POST "http://127.0.0.1:5000/db/initialise" -H "accept: application/json" -H "Content-Type: application/json" -d @./static/attributes.json
+curl -X POST "http://127.0.0.1:8080/db/initialise" -H "accept: application/json" -H "Content-Type: application/json" -d @./static/attributes.json
 ```
 ### Test the API
 
 GET request for the KPIs of the structure
 
 ```bash
-curl --location --request GET '127.0.0.1:5000/epsm_api/kpis'
+curl --location --request GET '127.0.0.1:8080/epsm_api/kpis'
 ```
 
-Or using swagger-ui in the http://127.0.0.1:5000
+Or using swagger-ui in the http://127.0.0.1:8080
+
+### Update db
+
+In order to update the db, change the Hierarchical Structure in attributes.json file.
+Run the bash script "init_db.sh" in the scripts folder.
 
 ## Authors
 
